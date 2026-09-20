@@ -61,17 +61,25 @@ export function PrivacyCheckPanel({
       </div>
 
       <div className="space-y-2">
-        <Row
-          label="App API requests during this chat"
-          value={String(apiRequestCount)}
-          tone={apiRequestCount === 0 ? "good" : "neutral"}
-        />
+        <div className="flex items-center justify-between gap-3 text-xs">
+          <span className="flex items-center gap-1 text-[var(--muted)]">
+            App network requests during this chat
+            <InfoTooltip text="Counts every fetch/XHR this page's JavaScript makes — including ordinary things like loading a different page in this app (e.g. clicking 'How it works'). A nonzero count doesn't mean AI/prompt data was sent; check the row below for that." />
+          </span>
+          <span className="font-medium text-[var(--foreground)]">
+            {apiRequestCount}
+          </span>
+        </div>
         <Row label="Prompt uploaded to our server" value="No" tone="good" />
-        <Row
-          label="Cloud AI request"
-          value={apiRequestCount === 0 ? "None detected" : "See DevTools"}
-          tone={apiRequestCount === 0 ? "good" : "neutral"}
-        />
+        <div className="flex items-center justify-between gap-3 text-xs">
+          <span className="flex items-center gap-1 text-[var(--muted)]">
+            Cloud AI request
+            <InfoTooltip text="Not inferred from the request count above — this is a fact about how the code is written: the send/regenerate logic only ever calls session.prompt()/promptStreaming(), local browser APIs, never fetch or XHR." />
+          </span>
+          <span className="font-medium text-[var(--accent-good)]">
+            None detected
+          </span>
+        </div>
       </div>
 
       <p className="mt-3 text-[11px] leading-snug text-[var(--muted)]">

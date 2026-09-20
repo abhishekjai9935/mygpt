@@ -118,10 +118,16 @@ before first paint so there's no flash of the wrong theme (see `lib/theme.ts`).
 - **Local Privacy Check** (in settings): a live count of `fetch`/`XHR` calls
   this page has made, from wrapping the real browser APIs
   (`lib/networkMonitor.ts`) — not a hardcoded "0". It never reads request or
-  response bodies, only counts calls, and resets on New chat/Clear chat. It
-  can't see Chrome's own model-download traffic or anything outside this
-  page's JavaScript, which the panel says explicitly — it doesn't claim all
-  browser network traffic is zero.
+  response bodies, only counts calls, and resets on New chat/Clear chat.
+  This count includes ordinary same-app navigation (e.g. clicking "How it
+  works" — internal `<Link>`s use `prefetch={false}` so it only moves on an
+  actual click, not a hover/viewport prefetch), so it's deliberately *not*
+  used to decide the "Cloud AI request" line — that one states a fact about
+  the code (send/regenerate only ever call `session.prompt()` /
+  `promptStreaming()`, never `fetch`/`XHR`) rather than inferring intent
+  from the request count. The panel can't see Chrome's own model-download
+  traffic or anything outside this page's JavaScript, which it says
+  explicitly — it doesn't claim all browser network traffic is zero.
 
 ## Offline support
 
@@ -158,7 +164,8 @@ Manual test:
 16. Keyboard: Tab through composer/buttons/tooltips; Enter sends, Shift+Enter inserts a newline.
 17. "Copy" on the last assistant reply → copies its text, icon briefly swaps to a checkmark.
 18. "Try again" on the last assistant reply → discards it and regenerates a new one for the same prompt.
-19. Local Privacy Check count stays at 0 through a normal chat; open DevTools → Network → Fetch/XHR, send a prompt, and confirm no request appears there either (cross-checking the panel's own count).
+19. Local Privacy Check count stays at 0 through a normal chat (sending prompts, receiving replies); open DevTools → Network → Fetch/XHR, send a prompt, and confirm no request appears there either.
+20. Hover (don't click) "How it works" → the request count should not move (prefetch is disabled); actually clicking it does increment the count — that's expected page navigation, not an AI request.
 
 ## Naming & trademark note
 

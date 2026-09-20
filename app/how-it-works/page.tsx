@@ -32,7 +32,11 @@ export default function HowItWorksPage() {
   return (
     <div className="mx-auto min-h-dvh max-w-2xl px-4 py-10 sm:py-14">
       <div className="mb-8 flex items-center justify-between gap-4">
-        <Link href="/" className="text-sm text-[var(--accent-primary)]">
+        <Link
+          href="/"
+          prefetch={false}
+          className="text-sm text-[var(--accent-primary)]"
+        >
           ← Back to chat
         </Link>
         <a

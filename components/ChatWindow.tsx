@@ -226,7 +226,11 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             Made with <HeartIcon className="h-2.5 w-2.5 text-[var(--accent-bad)]" /> in India
           </span>
           <span>·</span>
-          <Link href="/how-it-works" className="text-[var(--accent-primary)] hover:underline">
+          <Link
+            href="/how-it-works"
+            prefetch={false}
+            className="text-[var(--accent-primary)] hover:underline"
+          >
             How it works?
           </Link>
         </p>
