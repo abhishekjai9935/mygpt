@@ -5,7 +5,6 @@ import type { useLocalAI } from "@/lib/useLocalAI";
 import { StatusPanel } from "./StatusPanel";
 import { SessionModeToggle } from "./SessionModeToggle";
 import { DiagnosticsDrawer } from "./DiagnosticsDrawer";
-import { InfoSections } from "./InfoSections";
 
 export function SettingsDrawer({
   ai,
@@ -38,25 +37,20 @@ export function SettingsDrawer({
         />
       )}
       <aside
-        className={`shrink-0 overflow-hidden border-black/10 bg-[var(--background)] transition-[width] duration-200 dark:border-white/10 ${
+        className={`shrink-0 overflow-y-auto border-black/10 bg-[var(--background)] transition-[width] duration-200 dark:border-white/10 ${
           open
             ? "fixed inset-y-0 right-0 z-40 w-full max-w-sm border-l shadow-xl md:static md:z-auto md:w-[340px] md:shadow-none"
             : "fixed inset-y-0 right-0 z-40 w-0 md:static md:w-0 md:border-l-0"
         }`}
       >
         {open && (
-          <div className="flex h-full w-full max-w-sm flex-col md:w-[340px]">
-            <div className="shrink-0 border-b border-black/10 p-4 dark:border-white/10">
+          <div className="w-full max-w-sm md:w-[340px]">
+            <div className="border-b border-black/10 p-4 dark:border-white/10">
               <h2 className="text-sm font-semibold">Status &amp; settings</h2>
             </div>
-            <div className="min-h-0 flex-1 overflow-y-auto">
-              <SessionModeToggle ai={ai} />
-              <StatusPanel ai={ai} />
-              <DiagnosticsDrawer ai={ai} />
-            </div>
-            {/* Pinned so the "how it works" / GitHub / attribution links
-                stay visible without scrolling past the metric cards above. */}
-            <InfoSections />
+            <SessionModeToggle ai={ai} />
+            <StatusPanel ai={ai} />
+            <DiagnosticsDrawer ai={ai} />
           </div>
         )}
       </aside>

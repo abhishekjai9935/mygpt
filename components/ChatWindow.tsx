@@ -3,8 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { useLocalAI } from "@/lib/useLocalAI";
 import { ChatMessage } from "./ChatMessage";
+import Link from "next/link";
+import { GITHUB_REPO_URL } from "@/lib/constants";
 import {
   ChevronDownIcon,
+  GithubIcon,
+  HeartIcon,
   LogoMark,
   PlusIcon,
   SendIcon,
@@ -208,6 +212,26 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
         </div>
         <p className="mt-1.5 text-center text-[11px] text-[var(--muted)]">
           Runs entirely on this device — nothing is sent to a server.
+        </p>
+        <p className="mt-1 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-center text-[11px] text-[var(--muted)]">
+          <Link href="/how-it-works" className="text-[var(--accent-primary)] hover:underline">
+            How it works
+          </Link>
+          <span>·</span>
+          <a
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 hover:text-[var(--foreground)]"
+          >
+            <GithubIcon className="h-3 w-3" />
+            GitHub
+          </a>
+          <span>·</span>
+          <span className="inline-flex items-center gap-1">
+            Made with <HeartIcon className="h-2.5 w-2.5 text-[var(--accent-bad)]" /> in India
+          </span>
+          <span>· © {new Date().getFullYear()} Ekya Tech</span>
         </p>
       </div>
     </div>
