@@ -87,10 +87,11 @@ either way; both modes are entirely local to the browser.
 
 ## Appearance
 
-Follows the OS light/dark preference by default. The **Appearance** control
-in settings lets you force Light or Dark instead — applied via a `data-theme`
-attribute on `<html>`, set by an inline script in `<head>` before first paint
-so there's no flash of the wrong theme (see `lib/theme.ts`).
+Starts by following the OS light/dark preference. The sun/moon button in the
+header (`ThemeToggleButton.tsx`) is a simple light/dark switch — click it to
+override, which then sticks via `localStorage` until changed again. Applied
+via a `data-theme` attribute on `<html>`, set by an inline script in `<head>`
+before first paint so there's no flash of the wrong theme (see `lib/theme.ts`).
 
 ## What's exact vs. approximate vs. unavailable
 

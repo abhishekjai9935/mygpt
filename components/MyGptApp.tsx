@@ -7,6 +7,7 @@ import { SettingsDrawer } from "./SettingsDrawer";
 import { StatusPill } from "./StatusPill";
 import { OfflineBanner } from "./OfflineBanner";
 import { DesktopRecommendedBanner } from "./DesktopRecommendedBanner";
+import { ThemeToggleButton } from "./ThemeToggleButton";
 import { LockIcon, LogoMark } from "./icons";
 
 export function MyGptApp() {
@@ -45,6 +46,7 @@ export function MyGptApp() {
             <LockIcon className="h-3 w-3" />
             100% private
           </span>
+          <ThemeToggleButton />
           <StatusPill
             status={ai.state.status}
             active={settingsOpen}

@@ -3,7 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 import type { useLocalAI } from "@/lib/useLocalAI";
 import { ChatMessage } from "./ChatMessage";
-import { LogoMark, PlusIcon, SendIcon, StopIcon, TrashIcon } from "./icons";
+import {
+  ChevronDownIcon,
+  LogoMark,
+  PlusIcon,
+  SendIcon,
+  StopIcon,
+  TrashIcon,
+} from "./icons";
+
+/** Distance (px) from the bottom within which we still treat the user as
+ * "at the bottom" and keep auto-scrolling as new content streams in. */
+const BOTTOM_PIN_THRESHOLD = 96;
 
 const SUGGESTIONS = [
   "Explain quantum computing simply",
@@ -28,12 +39,31 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
   } = ai;
 
   const [input, setInput] = useState("");
+  const [isPinnedToBottom, setIsPinnedToBottom] = useState(true);
   const listRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Only auto-follow new content while the user is already at (or near) the
+  // bottom — the same pattern ChatGPT/Perplexity use. Scrolling up during a
+  // streaming response should stay put, not get yanked back down.
   useEffect(() => {
+    if (!isPinnedToBottom) return;
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
-  }, [messages]);
+  }, [messages, isPinnedToBottom]);
+
+  const handleScroll = () => {
+    const el = listRef.current;
+    if (!el) return;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    setIsPinnedToBottom(distanceFromBottom < BOTTOM_PIN_THRESHOLD);
+  };
+
+  const scrollToBottom = () => {
+    const el = listRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+    setIsPinnedToBottom(true);
+  };
 
   useEffect(() => {
     const el = textareaRef.current;
@@ -48,6 +78,7 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
     if (!input.trim() || isSending) return;
     void sendMessage(input);
     setInput("");
+    setIsPinnedToBottom(true);
     requestAnimationFrame(() => textareaRef.current?.focus());
   };
 
@@ -79,23 +110,36 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
         </div>
       )}
 
-      <div ref={listRef} className="flex-1 overflow-y-auto">
-        <div className="mx-auto w-full max-w-3xl py-3">
-          {messages.length === 0 ? (
-            <EmptyState
-              status={state.status}
-              onEnable={enable}
-              onSuggestion={(text) => {
-                setInput(text);
-                requestAnimationFrame(() => textareaRef.current?.focus());
-              }}
-            />
-          ) : (
-            messages.map((message) => (
-              <ChatMessage key={message.id} message={message} />
-            ))
-          )}
+      <div className="relative min-h-0 flex-1">
+        <div ref={listRef} onScroll={handleScroll} className="h-full overflow-y-auto">
+          <div className="mx-auto w-full max-w-3xl py-3">
+            {messages.length === 0 ? (
+              <EmptyState
+                status={state.status}
+                onEnable={enable}
+                onSuggestion={(text) => {
+                  setInput(text);
+                  requestAnimationFrame(() => textareaRef.current?.focus());
+                }}
+              />
+            ) : (
+              messages.map((message) => (
+                <ChatMessage key={message.id} message={message} />
+              ))
+            )}
+          </div>
         </div>
+
+        {!isPinnedToBottom && messages.length > 0 && (
+          <button
+            onClick={scrollToBottom}
+            aria-label="Jump to latest message"
+            title="Jump to latest message"
+            className="absolute bottom-3 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full border border-black/10 bg-[var(--panel)] text-[var(--foreground)] shadow-md hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+          >
+            <ChevronDownIcon className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       <div className="mx-auto w-full max-w-3xl px-3">

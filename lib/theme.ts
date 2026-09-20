@@ -23,6 +23,17 @@ export function applyTheme(theme: Theme): void {
   }
 }
 
+/** Resolves "system" against the OS preference so a simple light/dark toggle
+ * knows which state it's actually in right now. */
+export function isDarkNow(): boolean {
+  const stored = getStoredTheme();
+  if (stored !== "system") return stored === "dark";
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
+}
+
 export function saveTheme(theme: Theme): void {
   try {
     if (theme === "system") {
