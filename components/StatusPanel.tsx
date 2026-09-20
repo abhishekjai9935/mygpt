@@ -109,8 +109,7 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             ? `${state.lastInferenceMs} ms`
             : `${(state.lastInferenceMs / 1000).toFixed(1)} s`
         }
-        caption="How long the most recent reply took to generate, in this tab."
-        info="Measured with performance.now() around the prompt() call — a wall-clock time for this device, not a benchmark."
+        info="How long the most recent reply took to generate, in this tab — measured with performance.now() around the prompt() call. A wall-clock time for this device, not a benchmark."
       />
 
       <MetricCard
@@ -122,8 +121,7 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             {deviceInfo?.hardwareConcurrency ?? "?"} CPU threads
           </span>
         }
-        caption="Approximate figures from your browser, not a live system reading."
-        info="navigator.deviceMemory is a coarse bucket, not live free RAM; navigator.hardwareConcurrency is logical core count, not live CPU usage. Neither reflects real-time load, and browsers don't expose that to webpages."
+        info="Approximate figures from your browser, not a live system reading. navigator.deviceMemory is a coarse bucket, not live free RAM; navigator.hardwareConcurrency is logical core count, not live CPU usage. Neither reflects real-time load, and browsers don't expose that to webpages."
       />
 
       <div className="rounded-xl border border-[var(--accent-good)]/30 bg-gradient-to-br from-[var(--accent-good)]/10 to-transparent p-4">
