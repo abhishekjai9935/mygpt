@@ -25,6 +25,9 @@ export function InfoSections() {
         <HeartIcon className="h-3 w-3 text-[var(--accent-bad)]" />
         <span>in India</span>
       </p>
+      <p className="text-[var(--muted)]">
+        © {new Date().getFullYear()} Ekya Tech. All rights reserved.
+      </p>
     </div>
   );
 }

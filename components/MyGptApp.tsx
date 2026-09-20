@@ -7,7 +7,7 @@ import { SettingsDrawer } from "./SettingsDrawer";
 import { StatusPill } from "./StatusPill";
 import { OfflineBanner } from "./OfflineBanner";
 import { DesktopRecommendedBanner } from "./DesktopRecommendedBanner";
-import { LogoMark } from "./icons";
+import { LockIcon, LogoMark } from "./icons";
 
 export function MyGptApp() {
   const ai = useLocalAI();
@@ -26,6 +26,10 @@ export function MyGptApp() {
               by Ekya Tech
             </span>
           </div>
+          <span className="ml-1 hidden items-center gap-1 rounded-full bg-[var(--accent-good)]/10 px-2 py-0.5 text-[11px] font-medium text-[var(--accent-good)] sm:flex">
+            <LockIcon className="h-3 w-3" />
+            100% private
+          </span>
         </div>
         <StatusPill
           status={ai.state.status}

@@ -115,10 +115,13 @@ export default function HowItWorksPage() {
         </a>
       </Section>
 
-      <footer className="mt-14 flex items-center justify-center gap-1.5 border-t border-black/10 pt-6 text-xs text-[var(--muted)] dark:border-white/10">
-        <span>Made with</span>
-        <HeartIcon className="h-3.5 w-3.5 text-[var(--accent-bad)]" />
-        <span>in India</span>
+      <footer className="mt-14 flex flex-col items-center gap-1.5 border-t border-black/10 pt-6 text-xs text-[var(--muted)] dark:border-white/10">
+        <div className="flex items-center gap-1.5">
+          <span>Made with</span>
+          <HeartIcon className="h-3.5 w-3.5 text-[var(--accent-bad)]" />
+          <span>in India</span>
+        </div>
+        <p>© {new Date().getFullYear()} Ekya Tech. All rights reserved.</p>
       </footer>
     </div>
   );

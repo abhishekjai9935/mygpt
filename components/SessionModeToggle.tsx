@@ -23,9 +23,9 @@ export function SessionModeToggle({ ai }: { ai: ReturnType<typeof useLocalAI> })
   }, [idleExpiresAt]);
 
   return (
-    <div className="flex flex-col gap-1.5 border-b border-black/10 p-4 dark:border-white/10">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-xs font-medium">
+    <div className="flex flex-col gap-2 border-b border-black/10 p-4 dark:border-white/10">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5 text-sm font-medium text-[var(--foreground)]">
           <span>Permanent session</span>
           <InfoTooltip
             text={
@@ -40,7 +40,7 @@ export function SessionModeToggle({ ai }: { ai: ReturnType<typeof useLocalAI> })
           role="switch"
           aria-checked={isPermanent}
           onClick={() => setSessionMode(isPermanent ? "temporary" : "permanent")}
-          className="relative h-5 w-9 shrink-0 rounded-full transition-colors duration-150"
+          className="relative box-content h-5 w-9 shrink-0 rounded-full border border-black/10 transition-colors duration-150 dark:border-white/10"
           style={{
             backgroundColor: isPermanent
               ? "var(--accent-good)"
@@ -48,19 +48,27 @@ export function SessionModeToggle({ ai }: { ai: ReturnType<typeof useLocalAI> })
           }}
         >
           <span
-            className="absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-150"
+            className="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform duration-150"
             style={{
-              transform: isPermanent ? "translateX(18px)" : "translateX(2px)",
+              transform: isPermanent ? "translateX(16px)" : "translateX(0px)",
             }}
           />
         </button>
       </div>
-      <p className="text-[11px] text-[var(--muted)]">
-        {isPermanent
-          ? "Stored on this device until you clear it or Chrome clears site data."
-          : idleExpiresAt
-          ? `Auto-clears in ${formatCountdown(idleExpiresAt - now)} if you go idle.`
-          : "Auto-clears 20 minutes after your last message if you don't return."}
+      <p className="text-xs leading-snug text-[var(--muted)]">
+        {isPermanent ? (
+          "Stored on this device until you clear it or Chrome clears site data."
+        ) : idleExpiresAt ? (
+          <>
+            Auto-clears 20 minutes after you go idle — sending a message
+            resets the timer. Time remaining:{" "}
+            <span className="font-medium text-[var(--foreground)]">
+              {formatCountdown(idleExpiresAt - now)}
+            </span>
+          </>
+        ) : (
+          "Auto-clears 20 minutes after your last message if you don't return."
+        )}
       </p>
     </div>
   );

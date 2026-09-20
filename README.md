@@ -9,6 +9,14 @@ built-in AI (the `LanguageModel` Prompt API / Gemini Nano).
 Browser JavaScript  →  Chrome Prompt API  →  local model  →  response
 ```
 
+Full write-up of the mechanism and its limits: the in-app "How it works"
+page (`/how-it-works` on a running instance), source at
+[`app/how-it-works/page.tsx`](app/how-it-works/page.tsx).
+
+**Contributing?** See [CONTRIBUTING.md](CONTRIBUTING.md) to get set up, and
+[ARCHITECTURE.md](ARCHITECTURE.md) for how the codebase fits together before
+you dive in.
+
 ## Requirements
 
 - A recent desktop Chrome build with the built-in AI / Prompt API available.
@@ -29,31 +37,38 @@ prompts run entirely in the browser.
 
 ## Project structure
 
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the full breakdown of how these
+pieces fit together (state flow, why certain effects exist, hydration
+gotchas). Short version:
+
 ```
 app/
-  layout.tsx            root layout, metadata, SW registration
-  page.tsx               renders <MyGptApp />
-  offline/page.tsx        offline fallback cached by the service worker
-  how-it-works/page.tsx    full explanation, limits, and GitHub link
+  layout.tsx               root layout, metadata, theme init script, SW registration
+  page.tsx                  renders <MyGptApp />
+  offline/page.tsx           offline fallback cached by the service worker
+  how-it-works/page.tsx       full explanation, limits, and GitHub link
 components/
-  MyGptApp.tsx            top-level layout (header, chat, sidebar)
-  ChatWindow.tsx           message list, composer, streaming, stop/new/clear
-  ChatMessage.tsx          message bubble
-  StatusPanel.tsx          transparency dashboard (metrics + tooltips)
-  SessionModeToggle.tsx    temporary vs. permanent session control
-  DiagnosticsDrawer.tsx    raw developer diagnostics + event log
-  InfoSections.tsx         "how it works" / "what this can't measure"
-  OfflineBanner.tsx        shown when navigator.onLine is false
-  MetricCard.tsx, InfoTooltip.tsx   status panel building blocks
-  ServiceWorkerRegister.tsx registers /sw.js in production only
+  MyGptApp.tsx               top-level layout (header, chat, settings drawer)
+  ChatWindow.tsx              message list, composer, streaming, stop/new/clear
+  ChatMessage.tsx, Markdown.tsx  message bubble + rendered markdown responses
+  SettingsDrawer.tsx          slide-over panel (push on desktop, overlay on mobile)
+  StatusPanel.tsx             transparency dashboard (metrics + tooltips)
+  ThemeToggle.tsx             light/dark/system appearance control
+  SessionModeToggle.tsx       temporary vs. permanent session control
+  DiagnosticsDrawer.tsx       raw developer diagnostics + event log
+  InfoSections.tsx            links to /how-it-works, GitHub, attribution
+  StatusPill.tsx, OfflineBanner.tsx, DesktopRecommendedBanner.tsx  header/status chrome
+  MetricCard.tsx, InfoTooltip.tsx, icons.tsx   shared building blocks
+  ServiceWorkerRegister.tsx   registers /sw.js in production only
 lib/
-  local-ai.ts              thin wrapper over window.LanguageModel
-  useLocalAI.ts            the app's state machine (React hook)
-  persistence.ts           localStorage-backed session persistence
-  telemetry.ts             navigator-derived device info
-  types.ts                 shared types
-types/language-model.d.ts  ambient types for the experimental Prompt API
-public/sw.js                app-shell service worker (stale-while-revalidate)
+  local-ai.ts                thin wrapper over window.LanguageModel
+  useLocalAI.ts               the app's state machine (React hook)
+  persistence.ts              localStorage-backed session persistence
+  theme.ts                    light/dark/system theme helpers + init script
+  telemetry.ts                navigator-derived device info
+  types.ts, constants.ts      shared types and constants
+types/language-model.d.ts     ambient types for the experimental Prompt API
+public/sw.js                   app-shell service worker (stale-while-revalidate)
 ```
 
 ## Session retention
@@ -69,6 +84,13 @@ Chrome's own storage retention — it isn't a guarantee the data survives
 forever (e.g. the user clearing site data, or the browser evicting storage
 under pressure, will still remove it). Nothing is ever sent to a server
 either way; both modes are entirely local to the browser.
+
+## Appearance
+
+Follows the OS light/dark preference by default. The **Appearance** control
+in settings lets you force Light or Dark instead — applied via a `data-theme`
+attribute on `<html>`, set by an inline script in `<head>` before first paint
+so there's no flash of the wrong theme (see `lib/theme.ts`).
 
 ## What's exact vs. approximate vs. unavailable
 

@@ -1,5 +1,6 @@
 import type { useLocalAI } from "@/lib/useLocalAI";
 import { MetricCard } from "./MetricCard";
+import { LockIcon } from "./icons";
 
 const STATUS_LABEL: Record<string, string> = {
   checking: "Checking…",
@@ -50,6 +51,27 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
 
   return (
     <div className="flex flex-col gap-3 p-4">
+      <div className="rounded-xl border border-[var(--accent-good)]/30 bg-gradient-to-br from-[var(--accent-good)]/10 to-transparent p-4">
+        <div className="mb-2 flex items-center gap-2.5">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-good)] text-white">
+            <LockIcon className="h-4 w-4" />
+          </div>
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-[var(--accent-good)]">
+              100% private by design
+            </div>
+            <div className="text-sm font-semibold text-[var(--foreground)]">
+              Prompts never leave this device
+            </div>
+          </div>
+        </div>
+        <ul className="space-y-1 pl-1 text-xs text-[var(--muted)]">
+          <li>No server-side AI route — this app has none</li>
+          <li>Nothing is logged, because nothing is ever sent anywhere</li>
+          <li>Keeps working offline once the model is downloaded</li>
+        </ul>
+      </div>
+
       <MetricCard
         label="Local AI"
         value={modelStatusValue}
@@ -121,14 +143,6 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
         }
         caption="Approximate figures from your browser, not a live system reading."
         info="navigator.deviceMemory is a coarse bucket, not live free RAM; navigator.hardwareConcurrency is logical core count, not live CPU usage. Neither reflects real-time load, and browsers don't expose that to webpages."
-      />
-
-      <MetricCard
-        label="Privacy"
-        value="Prompts never leave this device"
-        tone="good"
-        caption="No server-side AI route — your browser talks directly to Chrome's local model."
-        info="MyGPT has no backend AI endpoint. There is nothing to log, because nothing is ever sent anywhere."
       />
     </div>
   );

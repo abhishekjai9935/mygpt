@@ -18,8 +18,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Follows the OS preference by default (data-theme unset). A user can force
+   light or dark via the Appearance toggle, which sets data-theme on <html>
+   and takes priority over the OS setting either way. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --background: #0a0a0a;
     --foreground: #ededed;
     --panel: #17171a;
@@ -29,6 +32,17 @@
     --accent-warn: #f59e0b;
     --accent-bad: #f87171;
   }
+}
+
+:root[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --panel: #17171a;
+  --muted: #9ca3af;
+  --accent-primary: #3b82f6;
+  --accent-good: #22c55e;
+  --accent-warn: #f59e0b;
+  --accent-bad: #f87171;
 }
 
 body {
