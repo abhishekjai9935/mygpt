@@ -1,5 +1,6 @@
 import type { useLocalAI } from "@/lib/useLocalAI";
 import { MetricCard } from "./MetricCard";
+import { InfoTooltip } from "./InfoTooltip";
 import { LockIcon } from "./icons";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -76,13 +77,13 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
         label="Local AI"
         value={modelStatusValue}
         tone={STATUS_TONE[state.status] ?? "neutral"}
-        caption={STATUS_CAPTION[state.status]}
-        info="Combines LanguageModel.availability(), the session's download monitor, and whether a local session is ready. Inference always runs in this browser — never on a server."
+        info={STATUS_CAPTION[state.status]}
       />
 
       <div className="rounded-xl border border-black/10 bg-[var(--panel)] p-4 dark:border-white/10">
-        <div className="mb-2 flex items-center justify-between text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+        <div className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
           <span>Context</span>
+          <InfoTooltip text="Once you send a message, this shows tokens used out of the total context window (session.contextUsage / session.contextWindow), and how many remain before you'd need to start a new chat." />
         </div>
         <div className="mb-1 flex items-baseline gap-1.5">
           <span className="text-lg font-semibold text-[var(--foreground)]">
@@ -98,11 +99,12 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             style={{ width: `${usedPct}%` }}
           />
         </div>
-        <p className="text-xs leading-snug text-[var(--muted)]">
-          {remaining !== null
-            ? `${formatTokens(remaining)} tokens remaining in this chat before you'll need to start a new one.`
-            : "Starts a new session's worth of tokens once you send your first message."}
-        </p>
+        {remaining !== null && (
+          <p className="text-xs leading-snug text-[var(--muted)]">
+            {formatTokens(remaining)} tokens remaining in this chat before
+            you&apos;ll need to start a new one.
+          </p>
+        )}
       </div>
 
       <MetricCard
