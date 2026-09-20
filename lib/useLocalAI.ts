@@ -283,29 +283,11 @@ export function useLocalAI() {
     []
   );
 
-  const runSend = useCallback(
-    async (text: string) => {
-      const session = await ensureSession();
-      if (!session) return;
-
-      touchInteraction(sessionMode);
-
-      const userMessage: ChatMessage = {
-        id: createId(),
-        role: "user",
-        content: text,
-        createdAt: Date.now(),
-      };
-      const assistantId = createId();
-      appendMessage(userMessage);
-      appendMessage({
-        id: assistantId,
-        role: "assistant",
-        content: "",
-        createdAt: Date.now(),
-        pending: true,
-      });
-
+  /** Streams (or awaits) a response into an already-appended assistant
+   * placeholder. Shared by a fresh send and a regenerate, which differ only
+   * in whether a new user message is appended first. */
+  const runInference = useCallback(
+    async (session: LanguageModel, text: string, assistantId: string) => {
       setIsSending(true);
       setOverflowWarning(null);
       const controller = new AbortController();
@@ -366,8 +348,79 @@ export function useLocalAI() {
         abortRef.current = null;
       }
     },
-    [appendMessage, ensureSession, log, sessionMode, touchInteraction, updateMessage]
+    [log, updateMessage]
   );
+
+  const runSend = useCallback(
+    async (text: string) => {
+      const session = await ensureSession();
+      if (!session) return;
+
+      touchInteraction(sessionMode);
+
+      const userMessage: ChatMessage = {
+        id: createId(),
+        role: "user",
+        content: text,
+        createdAt: Date.now(),
+      };
+      const assistantId = createId();
+      appendMessage(userMessage);
+      appendMessage({
+        id: assistantId,
+        role: "assistant",
+        content: "",
+        createdAt: Date.now(),
+        pending: true,
+      });
+
+      await runInference(session, text, assistantId);
+    },
+    [appendMessage, ensureSession, runInference, sessionMode, touchInteraction]
+  );
+
+  /** Re-runs the last user prompt, replacing the assistant reply that
+   * followed it with a freshly generated one. */
+  const regenerate = useCallback(async () => {
+    if (isSending) return;
+    const lastUserMessage = [...messages]
+      .reverse()
+      .find((m) => m.role === "user");
+    if (!lastUserMessage) return;
+
+    const session = await ensureSession();
+    if (!session) return;
+
+    touchInteraction(sessionMode);
+
+    setMessages((prev) => {
+      if (prev.length === 0 || prev[prev.length - 1].role !== "assistant") {
+        return prev;
+      }
+      const next = prev.slice(0, -1);
+      if (persistenceReadyRef.current) savePersistedMessages(next);
+      return next;
+    });
+
+    const assistantId = createId();
+    appendMessage({
+      id: assistantId,
+      role: "assistant",
+      content: "",
+      createdAt: Date.now(),
+      pending: true,
+    });
+
+    await runInference(session, lastUserMessage.content, assistantId);
+  }, [
+    appendMessage,
+    ensureSession,
+    isSending,
+    messages,
+    runInference,
+    sessionMode,
+    touchInteraction,
+  ]);
 
   const sendMessage = useCallback(
     async (rawText: string) => {
@@ -460,6 +513,7 @@ export function useLocalAI() {
     setSessionMode,
     enable,
     sendMessage,
+    regenerate,
     confirmOverflowSend,
     dismissOverflowWarning,
     stop,

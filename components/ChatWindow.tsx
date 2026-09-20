@@ -33,6 +33,7 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
     overflowWarning,
     enable,
     sendMessage,
+    regenerate,
     confirmOverflowSend,
     dismissOverflowWarning,
     stop,
@@ -125,8 +126,17 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
                 }}
               />
             ) : (
-              messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+              messages.map((message, index) => (
+                <ChatMessage
+                  key={message.id}
+                  message={message}
+                  isLast={index === messages.length - 1}
+                  onRetry={
+                    message.role === "assistant" && !isSending
+                      ? () => void regenerate()
+                      : undefined
+                  }
+                />
               ))
             )}
           </div>

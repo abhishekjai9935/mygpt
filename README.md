@@ -149,6 +149,8 @@ Manual test:
 14. Mobile viewport → layout stacks, composer and buttons stay usable.
 15. No network requests fire from the app on prompt submission (check the Network tab).
 16. Keyboard: Tab through composer/buttons/tooltips; Enter sends, Shift+Enter inserts a newline.
+17. "Copy" on the last assistant reply → copies its text, icon briefly swaps to a checkmark.
+18. "Try again" on the last assistant reply → discards it and regenerates a new one for the same prompt.
 
 ## Naming & trademark note
 
