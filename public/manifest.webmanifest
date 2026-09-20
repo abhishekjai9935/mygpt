@@ -1,0 +1,17 @@
+{
+  "name": "MyGPT by Ekya Tech",
+  "short_name": "MyGPT",
+  "description": "Your personal AI, running on your device.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
