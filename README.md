@@ -115,6 +115,13 @@ before first paint so there's no flash of the wrong theme (see `lib/theme.ts`).
   production only, a `Content-Security-Policy` with `connect-src 'self'` (the
   CSP is disabled in dev because Next's dev server needs `eval` for Fast
   Refresh).
+- **Local Privacy Check** (in settings): a live count of `fetch`/`XHR` calls
+  this page has made, from wrapping the real browser APIs
+  (`lib/networkMonitor.ts`) — not a hardcoded "0". It never reads request or
+  response bodies, only counts calls, and resets on New chat/Clear chat. It
+  can't see Chrome's own model-download traffic or anything outside this
+  page's JavaScript, which the panel says explicitly — it doesn't claim all
+  browser network traffic is zero.
 
 ## Offline support
 
@@ -151,6 +158,7 @@ Manual test:
 16. Keyboard: Tab through composer/buttons/tooltips; Enter sends, Shift+Enter inserts a newline.
 17. "Copy" on the last assistant reply → copies its text, icon briefly swaps to a checkmark.
 18. "Try again" on the last assistant reply → discards it and regenerates a new one for the same prompt.
+19. Local Privacy Check count stays at 0 through a normal chat; open DevTools → Network → Fetch/XHR, send a prompt, and confirm no request appears there either (cross-checking the panel's own count).
 
 ## Naming & trademark note
 

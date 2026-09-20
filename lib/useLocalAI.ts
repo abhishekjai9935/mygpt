@@ -18,6 +18,7 @@ import {
   savePersistedMessages,
   saveSessionMode,
 } from "./persistence";
+import { installNetworkMonitor } from "./networkMonitor";
 import { getDeviceInfo, isMobileDevice } from "./telemetry";
 import type {
   ChatMessage,
@@ -65,6 +66,9 @@ export function useLocalAI() {
     useState<OverflowWarning | null>(null);
   const [sessionMode, setSessionModeState] = useState<SessionMode>("temporary");
   const [idleExpiresAt, setIdleExpiresAt] = useState<number | null>(null);
+  /** Live count of fetch/XHR calls this page has made since the current
+   * chat started — see PrivacyCheckPanel. Resets on New chat/Clear chat. */
+  const [apiRequestCount, setApiRequestCount] = useState(0);
 
   const sessionRef = useRef<LanguageModel | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -199,6 +203,16 @@ export function useLocalAI() {
       clearIdleTimer();
     };
   }, [clearIdleTimer]);
+
+  // Counts fetch/XHR calls for the Local Privacy Check panel. Installed for
+  // the lifetime of the app (not just while the panel is open) so the count
+  // reflects everything that happened during the chat, not just what was
+  // visible when someone thought to look.
+  useEffect(() => {
+    return installNetworkMonitor(() => {
+      setApiRequestCount((prev) => prev + 1);
+    });
+  }, []);
 
   const setSessionMode = useCallback(
     (mode: SessionMode) => {
@@ -482,6 +496,7 @@ export function useLocalAI() {
     setIdleExpiresAt(null);
     setMessages([]);
     setOverflowWarning(null);
+    setApiRequestCount(0);
     setState((prev) => ({
       ...prev,
       contextUsage: null,
@@ -497,6 +512,7 @@ export function useLocalAI() {
     lastInteractionRef.current = null;
     setIdleExpiresAt(null);
     setMessages([]);
+    setApiRequestCount(0);
   }, [clearIdleTimer]);
 
   return {
@@ -508,6 +524,7 @@ export function useLocalAI() {
     isMobileDevice: deviceInfo ? isMobileDevice(deviceInfo.userAgent) : false,
     diagnostics,
     overflowWarning,
+    apiRequestCount,
     sessionMode,
     idleExpiresAt,
     setSessionMode,
