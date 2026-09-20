@@ -80,7 +80,7 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
         info={STATUS_CAPTION[state.status]}
       />
 
-      <div className="rounded-xl border border-black/10 bg-[var(--panel)] p-4 dark:border-white/10">
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-4">
         <div className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
           <span>Context</span>
           <InfoTooltip text="Once you send a message, this shows tokens used out of the total context window (session.contextUsage / session.contextWindow), and how many remain before you'd need to start a new chat." />

@@ -44,7 +44,7 @@ const components: Components = {
       {children}
     </blockquote>
   ),
-  hr: () => <hr className="my-3 border-black/10 dark:border-white/10" />,
+  hr: () => <hr className="my-3 border-[var(--border)]" />,
   table: ({ children }) => (
     <div className="mb-3 overflow-x-auto last:mb-0">
       <table className="w-full border-collapse text-left text-sm">
@@ -53,7 +53,7 @@ const components: Components = {
     </div>
   ),
   th: ({ children }) => (
-    <th className="border-b border-black/10 px-2 py-1 font-semibold dark:border-white/10">
+    <th className="border-b border-[var(--border)] px-2 py-1 font-semibold">
       {children}
     </th>
   ),

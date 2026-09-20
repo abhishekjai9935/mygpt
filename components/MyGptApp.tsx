@@ -29,17 +29,12 @@ export function MyGptApp() {
 
   return (
     <div className="flex h-dvh flex-col">
-      <header className="flex items-center justify-between border-b border-black/10 px-4 py-2.5 dark:border-white/10">
+      <header className="flex items-center justify-between border-b border-[var(--border)] px-4 py-2.5">
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--accent-primary)] text-white">
             <LogoMark className="h-4 w-4" />
           </div>
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-sm font-semibold">MyGPT</span>
-            <span className="hidden text-xs text-[var(--muted)] sm:inline">
-              by Ekya Tech
-            </span>
-          </div>
+          <span className="text-sm font-semibold">MyGPT</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="hidden items-center gap-1 rounded-full bg-[var(--accent-good)]/10 px-2 py-0.5 text-[11px] font-medium text-[var(--accent-good)] sm:flex">

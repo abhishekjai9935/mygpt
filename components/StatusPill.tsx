@@ -38,7 +38,7 @@ export function StatusPill({
       className={`flex items-center gap-2 rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium transition-colors ${
         active
           ? "border-[var(--accent-primary)]/40 bg-[var(--accent-primary)]/10 text-[var(--foreground)]"
-          : "border-black/10 text-[var(--foreground)] hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+          : "border-[var(--border)] text-[var(--foreground)] hover:bg-black/5 dark:hover:bg-white/5"
       }`}
     >
       <span

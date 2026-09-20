@@ -37,7 +37,7 @@ export function SettingsDrawer({
         />
       )}
       <aside
-        className={`shrink-0 overflow-y-auto border-black/10 bg-[var(--background)] transition-[width] duration-200 dark:border-white/10 ${
+        className={`shrink-0 overflow-y-auto border-[var(--border)] bg-[var(--background)] transition-[width] duration-200 ${
           open
             ? "fixed inset-y-0 right-0 z-40 w-full max-w-sm border-l shadow-xl md:static md:z-auto md:w-[340px] md:shadow-none"
             : "fixed inset-y-0 right-0 z-40 w-0 md:static md:w-0 md:border-l-0"
@@ -45,7 +45,7 @@ export function SettingsDrawer({
       >
         {open && (
           <div className="w-full max-w-sm md:w-[340px]">
-            <div className="border-b border-black/10 p-4 dark:border-white/10">
+            <div className="border-b border-[var(--border)] p-4">
               <h2 className="text-sm font-semibold">Status &amp; settings</h2>
             </div>
             <SessionModeToggle ai={ai} />

@@ -23,7 +23,7 @@ export function MetricCard({
   }[tone];
 
   return (
-    <div className="flex flex-col gap-1.5 rounded-xl border border-black/10 bg-[var(--panel)] p-4 dark:border-white/10">
+    <div className="flex flex-col gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--panel)] p-4">
       <div className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
         <span>{label}</span>
         {info && <InfoTooltip text={info} />}

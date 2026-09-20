@@ -35,7 +35,7 @@ export function DiagnosticsDrawer({ ai }: { ai: ReturnType<typeof useLocalAI> })
   ];
 
   return (
-    <div className="border-t border-black/10 dark:border-white/10">
+    <div className="border-t border-[var(--border)]">
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between px-4 py-2 text-xs font-medium uppercase tracking-wide text-[var(--muted)]"

@@ -41,7 +41,7 @@ export default function HowItWorksPage() {
           rel="noopener noreferrer"
           aria-label="Source code on GitHub"
           title="Source code on GitHub"
-          className="flex items-center gap-2 rounded-full border border-black/10 py-2 pl-3 pr-4 text-sm font-medium text-[var(--foreground)] hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+          className="flex items-center gap-2 rounded-full border border-[var(--border)] py-2 pl-3 pr-4 text-sm font-medium text-[var(--foreground)] hover:bg-black/5 dark:hover:bg-white/5"
         >
           <GithubIcon className="h-5 w-5" />
           Source code
@@ -58,7 +58,7 @@ export default function HowItWorksPage() {
       </p>
 
       <Section title="The flow">
-        <div className="rounded-xl border border-black/10 bg-[var(--panel)] p-4 text-center font-mono text-xs text-[var(--foreground)] dark:border-white/10">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-4 text-center font-mono text-xs text-[var(--foreground)]">
           Browser JavaScript → Chrome Prompt API → local model → response
         </div>
         <p>
@@ -117,7 +117,7 @@ export default function HowItWorksPage() {
         </p>
       </Section>
 
-      <footer className="mt-14 flex flex-col items-center gap-1.5 border-t border-black/10 pt-6 text-xs text-[var(--muted)] dark:border-white/10">
+      <footer className="mt-14 flex flex-col items-center gap-1.5 border-t border-[var(--border)] pt-6 text-xs text-[var(--muted)]">
         <div className="flex items-center gap-1.5">
           <span>Made with</span>
           <HeartIcon className="h-3.5 w-3.5 text-[var(--accent-bad)]" />

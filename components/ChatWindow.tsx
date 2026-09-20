@@ -137,7 +137,7 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             onClick={scrollToBottom}
             aria-label="Jump to latest message"
             title="Jump to latest message"
-            className="absolute bottom-3 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full border border-black/10 bg-[var(--panel)] text-[var(--foreground)] shadow-md hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+            className="absolute bottom-3 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--panel)] text-[var(--foreground)] shadow-md hover:bg-black/5 dark:hover:bg-white/5"
           >
             <ChevronDownIcon className="h-4 w-4" />
           </button>
@@ -171,7 +171,7 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
       </div>
 
       <div className="px-3 pb-4">
-        <div className="mx-auto flex w-full max-w-3xl items-end gap-2 rounded-3xl border border-black/10 bg-[var(--panel)] p-2 shadow-sm dark:border-white/10">
+        <div className="mx-auto flex w-full max-w-3xl items-end gap-2 rounded-3xl border border-[var(--border)] bg-[var(--panel)] p-2 shadow-sm">
           <textarea
             ref={textareaRef}
             value={input}
@@ -289,7 +289,7 @@ function EmptyState({
             <button
               key={s}
               onClick={() => onSuggestion(s)}
-              className="rounded-xl border border-black/10 bg-[var(--panel)] px-3 py-2.5 text-left text-xs text-[var(--foreground)] hover:border-[var(--accent-primary)]/40 dark:border-white/10"
+              className="rounded-xl border border-[var(--border)] bg-[var(--panel)] px-3 py-2.5 text-left text-xs text-[var(--foreground)] hover:border-[var(--accent-primary)]/40"
             >
               {s}
             </button>
@@ -308,7 +308,7 @@ function Notice({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto mt-8 max-w-md rounded-xl border border-black/10 bg-[var(--panel)] p-5 text-center text-sm text-[var(--muted)] dark:border-white/10">
+    <div className="mx-auto mt-8 max-w-md rounded-xl border border-[var(--border)] bg-[var(--panel)] p-5 text-center text-sm text-[var(--muted)]">
       <p className="mb-1 font-medium text-[var(--foreground)]">{title}</p>
       <p>{children}</p>
     </div>

@@ -25,7 +25,7 @@ export function InfoTooltip({ text }: { text: string }) {
         <span
           role="tooltip"
           id={tooltipId}
-          className="absolute bottom-full left-1/2 z-20 mb-2 w-56 -translate-x-1/2 rounded-md border border-black/10 bg-[var(--panel)] p-2 text-xs font-normal text-[var(--foreground)] shadow-lg dark:border-white/10"
+          className="absolute bottom-full left-1/2 z-20 mb-2 w-56 -translate-x-1/2 rounded-md border border-[var(--border)] bg-[var(--panel)] p-2 text-xs font-normal text-[var(--foreground)] shadow-lg"
         >
           {text}
         </span>

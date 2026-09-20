@@ -19,6 +19,7 @@
   --accent-warn: #b45309;
   --accent-bad: #dc2626;
   --toggle-track-off: #d1d5db;
+  --border: #e2e2e5;
 }
 
 @theme inline {
@@ -38,6 +39,7 @@
   --accent-warn: #f59e0b;
   --accent-bad: #f87171;
   --toggle-track-off: rgba(120, 120, 128, 0.32);
+  --border: #2a2a2e;
 }
 
 body {

@@ -23,7 +23,7 @@ export function SessionModeToggle({ ai }: { ai: ReturnType<typeof useLocalAI> })
   }, [idleExpiresAt]);
 
   return (
-    <div className="flex flex-col gap-2 border-b border-black/10 p-4 dark:border-white/10">
+    <div className="flex flex-col gap-2 border-b border-[var(--border)] p-4">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-1.5 text-sm font-medium text-[var(--foreground)]">
           <span>Permanent session</span>
@@ -40,7 +40,7 @@ export function SessionModeToggle({ ai }: { ai: ReturnType<typeof useLocalAI> })
           role="switch"
           aria-checked={isPermanent}
           onClick={() => setSessionMode(isPermanent ? "temporary" : "permanent")}
-          className="relative box-content h-5 w-9 shrink-0 rounded-full border border-black/10 transition-colors duration-150 dark:border-white/10"
+          className="relative box-content h-5 w-9 shrink-0 rounded-full border border-[var(--border)] transition-colors duration-150"
           style={{
             backgroundColor: isPermanent
               ? "var(--accent-good)"
