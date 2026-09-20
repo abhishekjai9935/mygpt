@@ -21,6 +21,16 @@ const STATUS_TONE: Record<string, "neutral" | "good" | "warn" | "bad"> = {
   error: "bad",
 };
 
+const STATUS_CAPTION: Record<string, string> = {
+  checking: "Looking for Chrome's built-in AI in this browser.",
+  unsupported: "This browser doesn't expose Chrome's on-device AI.",
+  unavailable: "Reported unavailable right now — can depend on hardware or storage.",
+  downloadable: "The model needs to download once before you can chat.",
+  downloading: "Chrome is downloading the on-device model.",
+  available: "Running Chrome's built-in model locally, on this device.",
+  error: "Something went wrong creating the local session.",
+};
+
 function formatTokens(n: number | null): string {
   return n === null ? "—" : n.toLocaleString();
 }
@@ -28,10 +38,10 @@ function formatTokens(n: number | null): string {
 export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
   const { state, isOnline, deviceInfo } = ai;
 
-  const remaining =
-    state.contextUsage !== null && state.contextWindow !== null
-      ? Math.max(state.contextWindow - state.contextUsage, 0)
-      : null;
+  const used = state.contextUsage;
+  const total = state.contextWindow;
+  const remaining = used !== null && total !== null ? Math.max(total - used, 0) : null;
+  const usedPct = used !== null && total ? Math.min((used / total) * 100, 100) : 0;
 
   const modelStatusValue =
     state.status === "downloading" && state.downloadProgress !== null
@@ -42,36 +52,53 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
     <div className="flex flex-col gap-3 p-4">
       <MetricCard
         label="Local AI"
-        value={state.status === "available" ? "Enabled" : "Not enabled"}
-        tone={state.status === "available" ? "good" : "neutral"}
-        info="Whether an on-device model session is ready to answer prompts right now."
-      />
-      <MetricCard
-        label="Model status"
         value={modelStatusValue}
         tone={STATUS_TONE[state.status] ?? "neutral"}
-        info="Reported by Chrome's LanguageModel.availability() and the session's download monitor."
+        caption={STATUS_CAPTION[state.status]}
+        info="Combines LanguageModel.availability(), the session's download monitor, and whether a local session is ready. Inference always runs in this browser — never on a server."
       />
+
+      <div className="rounded-xl border border-black/10 bg-[var(--panel)] p-4 dark:border-white/10">
+        <div className="mb-2 flex items-center justify-between text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+          <span>Context</span>
+        </div>
+        <div className="mb-1 flex items-baseline gap-1.5">
+          <span className="text-lg font-semibold text-[var(--foreground)]">
+            {formatTokens(used)}
+          </span>
+          <span className="text-sm text-[var(--muted)]">
+            / {formatTokens(total)} tokens used
+          </span>
+        </div>
+        <div className="mb-2 h-1.5 w-full overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+          <div
+            className="h-full rounded-full bg-[var(--accent-primary)] transition-[width]"
+            style={{ width: `${usedPct}%` }}
+          />
+        </div>
+        <p className="text-xs leading-snug text-[var(--muted)]">
+          {remaining !== null
+            ? `${formatTokens(remaining)} tokens remaining in this chat before you'll need to start a new one.`
+            : "Starts a new session's worth of tokens once you send your first message."}
+        </p>
+      </div>
+
       <MetricCard
-        label="Inference mode"
-        value="Local browser model"
-        info="Every response is generated on this device by Chrome's built-in model — never sent to a server."
+        label="Network"
+        value={isOnline ? "Online" : "Offline"}
+        tone={isOnline ? "neutral" : "warn"}
+        caption={
+          isOnline
+            ? "You can go offline anytime — once the model's downloaded, MyGPT keeps working without internet."
+            : state.status === "available"
+            ? "You're offline, but the model already lives on this device — chat still works."
+            : "Reconnect to finish downloading the model before you can chat."
+        }
+        info="From navigator.onLine, the browser's own connectivity signal."
       />
+
       <MetricCard
-        label="Context used / window"
-        value={`${formatTokens(state.contextUsage)} / ${formatTokens(
-          state.contextWindow
-        )}`}
-        info="Tokens consumed by the current session vs. its total capacity, from session.contextUsage and session.contextWindow."
-      />
-      <MetricCard
-        label="Context remaining"
-        value={formatTokens(remaining)}
-        tone={remaining !== null && state.contextWindow && remaining < state.contextWindow * 0.1 ? "warn" : "neutral"}
-        info="Approximate tokens left before you'll need to start a new chat."
-      />
-      <MetricCard
-        label="Last inference"
+        label="Last response"
         value={
           state.lastInferenceMs === null
             ? "—"
@@ -79,31 +106,29 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             ? `${state.lastInferenceMs} ms`
             : `${(state.lastInferenceMs / 1000).toFixed(1)} s`
         }
-        info="Wall-clock time for the most recent response, measured with performance.now() in this tab."
+        caption="How long the most recent reply took to generate, in this tab."
+        info="Measured with performance.now() around the prompt() call — a wall-clock time for this device, not a benchmark."
       />
-      <MetricCard
-        label="Network"
-        value={isOnline ? "Online" : "Offline"}
-        tone={isOnline ? "neutral" : "warn"}
-        info="From navigator.onLine. Once the model is downloaded, chat can keep working while offline."
-      />
+
       <MetricCard
         label="Device"
         value={
           <span>
-            Approx. RAM:{" "}
-            {deviceInfo?.deviceMemory ? `${deviceInfo.deviceMemory} GB` : "Not exposed"}
-            <br />
-            CPU threads: {deviceInfo?.hardwareConcurrency ?? "Not exposed"}
+            {deviceInfo?.deviceMemory ? `${deviceInfo.deviceMemory} GB RAM` : "RAM not exposed"}
+            {" · "}
+            {deviceInfo?.hardwareConcurrency ?? "?"} CPU threads
           </span>
         }
-        info="navigator.deviceMemory is a coarse bucket, not live free RAM; navigator.hardwareConcurrency is logical core count, not live CPU usage. Neither reflects real-time system load, and browsers don't expose that to webpages."
+        caption="Approximate figures from your browser, not a live system reading."
+        info="navigator.deviceMemory is a coarse bucket, not live free RAM; navigator.hardwareConcurrency is logical core count, not live CPU usage. Neither reflects real-time load, and browsers don't expose that to webpages."
       />
+
       <MetricCard
         label="Privacy"
         value="Prompts never leave this device"
         tone="good"
-        info="MyGPT has no server-side AI route. Chat requests go directly from your browser to Chrome's local model."
+        caption="No server-side AI route — your browser talks directly to Chrome's local model."
+        info="MyGPT has no backend AI endpoint. There is nothing to log, because nothing is ever sent anywhere."
       />
     </div>
   );

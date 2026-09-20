@@ -11,7 +11,7 @@ import { LogoMark } from "./icons";
 
 export function MyGptApp() {
   const ai = useLocalAI();
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(true);
 
   return (
     <div className="flex h-dvh flex-col">
