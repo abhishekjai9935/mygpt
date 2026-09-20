@@ -31,12 +31,22 @@ function Section({
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto min-h-dvh max-w-2xl px-4 py-10 sm:py-14">
-      <Link
-        href="/"
-        className="mb-8 inline-block text-sm text-[var(--accent-primary)]"
-      >
-        ← Back to chat
-      </Link>
+      <div className="mb-8 flex items-center justify-between gap-4">
+        <Link href="/" className="text-sm text-[var(--accent-primary)]">
+          ← Back to chat
+        </Link>
+        <a
+          href={GITHUB_REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Source code on GitHub"
+          title="Source code on GitHub"
+          className="flex items-center gap-2 rounded-full border border-black/10 py-2 pl-3 pr-4 text-sm font-medium text-[var(--foreground)] hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+        >
+          <GithubIcon className="h-5 w-5" />
+          Source code
+        </a>
+      </div>
 
       <h1 className="mb-2 text-2xl font-semibold text-[var(--foreground)]">
         How MyGPT works
@@ -101,18 +111,10 @@ export default function HowItWorksPage() {
 
       <Section title="Source code & contributing">
         <p>
-          MyGPT is open source. For implementation details, to report an
-          issue, or to contribute, see the GitHub repository:
+          MyGPT is open source — implementation details, issue reports, and
+          contributions all go through the GitHub repository linked at the
+          top of this page.
         </p>
-        <a
-          href={GITHUB_REPO_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-sm font-medium text-[var(--foreground)] hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
-        >
-          <GithubIcon className="h-4 w-4" />
-          View on GitHub
-        </a>
       </Section>
 
       <footer className="mt-14 flex flex-col items-center gap-1.5 border-t border-black/10 pt-6 text-xs text-[var(--muted)] dark:border-white/10">

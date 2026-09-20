@@ -44,7 +44,7 @@ export function SessionModeToggle({ ai }: { ai: ReturnType<typeof useLocalAI> })
           style={{
             backgroundColor: isPermanent
               ? "var(--accent-good)"
-              : "rgba(120,120,128,0.32)",
+              : "var(--toggle-track-off)",
           }}
         >
           <span
