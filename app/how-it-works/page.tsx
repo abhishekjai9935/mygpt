@@ -71,6 +71,50 @@ export default function HowItWorksPage() {
         </p>
       </Section>
 
+      <Section title="Built on Chrome's Prompt API">
+        <p>
+          MyGPT is a thin interface over Chrome&apos;s experimental built-in
+          AI — the Prompt API, which runs Gemini Nano locally in the
+          browser via
+          <code className="mx-1 rounded bg-black/[.06] px-1 py-0.5 font-mono text-[0.85em] dark:bg-white/[.1]">
+            window.LanguageModel
+          </code>
+          . It&apos;s still an early, Chrome-only API and the exact behavior
+          can change between Chrome versions.
+        </p>
+        <p>
+          Built with reference to Chrome&apos;s own documentation for this
+          API:
+        </p>
+        <ul className="list-inside list-disc space-y-1.5">
+          <li>
+            <a
+              href="https://developer.chrome.com/docs/ai/glossary"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--accent-primary)] hover:underline"
+            >
+              Chrome for Developers — Built-in AI glossary
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/LanguageModel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--accent-primary)] hover:underline"
+            >
+              MDN — LanguageModel API reference
+            </a>
+          </li>
+        </ul>
+        <p>
+          Credit to the Chrome team and the web standards contributors
+          documenting this API — MyGPT wouldn&apos;t exist without that
+          work being public.
+        </p>
+      </Section>
+
       <Section title="What this page cannot measure">
         <ul className="list-inside list-disc space-y-1.5">
           <li>Exact model file size on disk</li>
