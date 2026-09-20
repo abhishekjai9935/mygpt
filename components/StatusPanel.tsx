@@ -1,6 +1,7 @@
 import type { useLocalAI } from "@/lib/useLocalAI";
 import { MetricCard } from "./MetricCard";
 import { InfoTooltip } from "./InfoTooltip";
+import { PrivacyCheckPanel } from "./PrivacyCheckPanel";
 import { LockIcon } from "./icons";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -60,9 +61,9 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
       />
 
       <div className="rounded-xl border border-[var(--border)] bg-[var(--panel)] p-4">
-        <div className="mb-2 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
+        <div className="mb-2 flex items-center gap-1.5 text-xs font-medium text-[var(--muted)]">
           <span>Context</span>
-          <InfoTooltip text="Once you send a message, this shows tokens used out of the total context window (session.contextUsage / session.contextWindow), and how many remain before you'd need to start a new chat." />
+          <InfoTooltip text="Tokens used out of this chat's total context window." />
         </div>
         <div className="mb-1 flex items-baseline gap-1.5">
           <span className="text-lg font-semibold text-[var(--foreground)]">
@@ -90,14 +91,13 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
         label="Network"
         value={isOnline ? "Online" : "Offline"}
         tone={isOnline ? "neutral" : "warn"}
-        caption={
+        info={
           isOnline
-            ? "You can go offline anytime — once the model's downloaded, MyGPT keeps working without internet."
+            ? "Once downloaded, the model works offline too."
             : state.status === "available"
-            ? "You're offline, but the model already lives on this device — chat still works."
-            : "Reconnect to finish downloading the model before you can chat."
+            ? "Model's already on this device — chat still works."
+            : "Reconnect to finish downloading the model."
         }
-        info="From navigator.onLine, the browser's own connectivity signal."
       />
 
       <MetricCard
@@ -109,8 +109,10 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             ? `${state.lastInferenceMs} ms`
             : `${(state.lastInferenceMs / 1000).toFixed(1)} s`
         }
-        info="How long the most recent reply took to generate, in this tab — measured with performance.now() around the prompt() call. A wall-clock time for this device, not a benchmark."
+        info="How long the last reply took to generate, in this tab."
       />
+
+      <PrivacyCheckPanel ai={ai} />
 
       <MetricCard
         label="Device"
@@ -121,7 +123,7 @@ export function StatusPanel({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             {deviceInfo?.hardwareConcurrency ?? "?"} CPU threads
           </span>
         }
-        info="Approximate figures from your browser, not a live system reading. navigator.deviceMemory is a coarse bucket, not live free RAM; navigator.hardwareConcurrency is logical core count, not live CPU usage. Neither reflects real-time load, and browsers don't expose that to webpages."
+        info="Approximate — not a live reading of your system's actual RAM or CPU usage."
       />
 
       <div className="rounded-xl border border-[var(--accent-good)]/30 bg-gradient-to-br from-[var(--accent-good)]/10 to-transparent p-4">

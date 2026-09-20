@@ -30,8 +30,8 @@ export function SessionModeToggle({ ai }: { ai: ReturnType<typeof useLocalAI> })
           <InfoTooltip
             text={
               isPermanent
-                ? "Chat is saved to this browser's local storage and reloads next visit. Retention still follows Chrome's own storage policy — it isn't guaranteed to persist forever (e.g. if the user clears site data)."
-                : "Chat auto-clears after 20 minutes since your last message if you don't come back. Toggle on to keep it saved in this browser instead."
+                ? "Saved in this browser across visits — not guaranteed forever if you clear site data."
+                : "Auto-clears 20 minutes after your last message. Toggle on to keep it saved instead."
             }
           />
         </div>

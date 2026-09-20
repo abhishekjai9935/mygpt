@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import type { useLocalAI } from "@/lib/useLocalAI";
 import { StatusPanel } from "./StatusPanel";
 import { SessionModeToggle } from "./SessionModeToggle";
-import { PrivacyCheckPanel } from "./PrivacyCheckPanel";
 import { DiagnosticsDrawer } from "./DiagnosticsDrawer";
 
 export function SettingsDrawer({
@@ -51,9 +50,6 @@ export function SettingsDrawer({
             </div>
             <SessionModeToggle ai={ai} />
             <StatusPanel ai={ai} />
-            <div className="px-4 pb-4">
-              <PrivacyCheckPanel ai={ai} />
-            </div>
             <DiagnosticsDrawer ai={ai} />
           </div>
         )}

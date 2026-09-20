@@ -4,14 +4,11 @@ import { InfoTooltip } from "./InfoTooltip";
 export function MetricCard({
   label,
   value,
-  caption,
   info,
   tone = "neutral",
 }: {
   label: string;
   value: ReactNode;
-  /** Always-visible one-line context, e.g. a caveat worth surfacing without a hover. */
-  caption?: ReactNode;
   info?: string;
   tone?: "neutral" | "good" | "warn" | "bad";
 }) {
@@ -23,17 +20,12 @@ export function MetricCard({
   }[tone];
 
   return (
-    <div className="flex flex-col gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--panel)] p-4">
-      <div className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
-        <span>{label}</span>
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--panel)] px-4 py-2.5">
+      <span className="flex items-center gap-1.5 text-xs font-medium text-[var(--muted)]">
+        {label}
         {info && <InfoTooltip text={info} />}
-      </div>
-      <div className={`text-lg font-semibold leading-tight ${toneClass}`}>
-        {value}
-      </div>
-      {caption && (
-        <p className="text-xs leading-snug text-[var(--muted)]">{caption}</p>
-      )}
+      </span>
+      <span className={`text-sm font-semibold ${toneClass}`}>{value}</span>
     </div>
   );
 }
