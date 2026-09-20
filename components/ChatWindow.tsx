@@ -182,9 +182,11 @@ function EmptyState({
   if (status === "unsupported") {
     return (
       <Notice title="Local AI isn't available in this browser">
-        MyGPT needs Chrome&apos;s built-in Prompt API (Gemini Nano). Try the
-        latest desktop Chrome with the feature enabled. No cloud fallback is
-        used in this demo.
+        MyGPT needs Chrome&apos;s built-in Prompt API (Gemini Nano), which only
+        runs in the Chrome browser on a desktop or laptop. It isn&apos;t
+        available on mobile, and no other browser — Safari, Firefox, Edge —
+        supports it either, even on desktop. No cloud fallback is used in
+        this demo.
       </Notice>
     );
   }

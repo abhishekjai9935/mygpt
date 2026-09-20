@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocalAI } from "@/lib/useLocalAI";
 import { ChatWindow } from "./ChatWindow";
 import { SettingsDrawer } from "./SettingsDrawer";
@@ -11,7 +11,20 @@ import { LockIcon, LogoMark } from "./icons";
 
 export function MyGptApp() {
   const ai = useLocalAI();
+  // Open by default on desktop, where the panel just pushes the chat over.
+  // On a narrow/mobile viewport it would cover the whole screen instead, so
+  // start closed there and let people open it deliberately via the pill.
   const [settingsOpen, setSettingsOpen] = useState(true);
+
+  useEffect(() => {
+    // Viewport width is only knowable client-side; adjusting the SSR-safe
+    // default here (rather than reading it in the initializer) avoids a
+    // hydration mismatch.
+    if (!window.matchMedia("(min-width: 768px)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSettingsOpen(false);
+    }
+  }, []);
 
   return (
     <div className="flex h-dvh flex-col">
@@ -40,7 +53,9 @@ export function MyGptApp() {
         </div>
       </header>
 
-      <DesktopRecommendedBanner />
+      <DesktopRecommendedBanner
+        show={ai.isMobileDevice && ai.state.status === "unsupported"}
+      />
 
       {!ai.isOnline && (
         <OfflineBanner modelAvailable={ai.state.status === "available"} />

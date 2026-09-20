@@ -18,7 +18,7 @@ import {
   savePersistedMessages,
   saveSessionMode,
 } from "./persistence";
-import { getDeviceInfo } from "./telemetry";
+import { getDeviceInfo, isMobileDevice } from "./telemetry";
 import type {
   ChatMessage,
   DeviceInfo,
@@ -452,6 +452,7 @@ export function useLocalAI() {
     isSending,
     isOnline,
     deviceInfo,
+    isMobileDevice: deviceInfo ? isMobileDevice(deviceInfo.userAgent) : false,
     diagnostics,
     overflowWarning,
     sessionMode,
