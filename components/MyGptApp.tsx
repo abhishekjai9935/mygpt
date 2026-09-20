@@ -26,15 +26,18 @@ export function MyGptApp() {
               by Ekya Tech
             </span>
           </div>
-          <span className="ml-1 hidden items-center gap-1 rounded-full bg-[var(--accent-good)]/10 px-2 py-0.5 text-[11px] font-medium text-[var(--accent-good)] sm:flex">
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="hidden items-center gap-1 rounded-full bg-[var(--accent-good)]/10 px-2 py-0.5 text-[11px] font-medium text-[var(--accent-good)] sm:flex">
             <LockIcon className="h-3 w-3" />
             100% private
           </span>
+          <StatusPill
+            status={ai.state.status}
+            active={settingsOpen}
+            onClick={() => setSettingsOpen((open) => !open)}
+          />
         </div>
-        <StatusPill
-          status={ai.state.status}
-          onClick={() => setSettingsOpen(true)}
-        />
       </header>
 
       <DesktopRecommendedBanner />

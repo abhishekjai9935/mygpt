@@ -23,15 +23,23 @@ const LABEL: Record<LocalAIStatus, string> = {
 
 export function StatusPill({
   status,
+  active,
   onClick,
 }: {
   status: LocalAIStatus;
+  active?: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 rounded-full border border-black/10 py-1.5 pl-3 pr-2 text-xs font-medium text-[var(--foreground)] hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+      aria-pressed={active}
+      aria-label="Toggle status & settings"
+      className={`flex items-center gap-2 rounded-full border py-1.5 pl-3 pr-2 text-xs font-medium transition-colors ${
+        active
+          ? "border-[var(--accent-primary)]/40 bg-[var(--accent-primary)]/10 text-[var(--foreground)]"
+          : "border-black/10 text-[var(--foreground)] hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+      }`}
     >
       <span
         className="h-2 w-2 rounded-full"
