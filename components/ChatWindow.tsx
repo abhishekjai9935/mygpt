@@ -195,7 +195,7 @@ export function ChatWindow({ ai }: { ai: ReturnType<typeof useLocalAI> }) {
             }
             rows={1}
             aria-label="Message"
-            className="max-h-40 min-h-[2.25rem] flex-1 resize-none bg-transparent px-2 py-1.5 text-sm outline-none disabled:opacity-50"
+            className="max-h-40 min-h-[2.25rem] flex-1 resize-none bg-transparent px-2 py-1.5 text-base outline-none disabled:opacity-50"
           />
           {isSending ? (
             <button

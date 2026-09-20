@@ -63,7 +63,7 @@ export function ChatMessage({
   if (isUser) {
     return (
       <div className="flex justify-end gap-3 px-4 py-2">
-        <div className="max-w-[80%] rounded-2xl rounded-br-md bg-[var(--accent-primary)] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap break-words text-white sm:max-w-[70%]">
+        <div className="max-w-[80%] rounded-2xl rounded-br-md bg-[var(--accent-primary)] px-4 py-2.5 text-base leading-relaxed whitespace-pre-wrap break-words text-white sm:max-w-[70%]">
           {message.content}
         </div>
       </div>
@@ -81,7 +81,7 @@ export function ChatMessage({
         <div
           className={
             message.isError
-              ? "rounded-lg border border-[var(--accent-bad)]/40 bg-[var(--accent-bad)]/10 px-3 py-2 text-sm text-[var(--accent-bad)]"
+              ? "rounded-lg border border-[var(--accent-bad)]/40 bg-[var(--accent-bad)]/10 px-3 py-2 text-base text-[var(--accent-bad)]"
               : "text-[var(--foreground)]"
           }
         >

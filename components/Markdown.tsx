@@ -92,7 +92,7 @@ const components: Components = {
 
 export function Markdown({ content }: { content: string }) {
   return (
-    <div className="text-sm leading-relaxed [word-break:break-word]">
+    <div className="text-base leading-relaxed [word-break:break-word]">
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
         {content}
       </ReactMarkdown>
